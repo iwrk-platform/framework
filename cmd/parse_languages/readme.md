@@ -27,11 +27,11 @@ en:
 
 Для глобальной установки:
 ```bash
-go install github.com/iwrk-platform/framework/cmd/parser_languages@latest
+go install github.com/iwrk-platform/framework/cmd/parse_languages@latest
 ```
 Для установки при разработке:
 ```bash
-go install ./cmd/parser_languages
+go install ./cmd/parse_languages
 ````
 
 ## Подключение в Taskfile.yml гейтвея
