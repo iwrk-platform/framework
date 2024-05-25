@@ -5,6 +5,14 @@ import (
 	"time"
 )
 
+func IntToString(i int) string {
+	return strconv.Itoa(i)
+}
+
+func UintToString(i uint) string {
+	return strconv.FormatUint(uint64(i), 10)
+}
+
 func Int64ToString(n int64) string {
 	return strconv.FormatInt(n, 10)
 }
