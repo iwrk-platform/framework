@@ -6,6 +6,7 @@ type MenuRoute struct {
 	Title        string
 	Path         string
 	Icon         string
+	IsBase       bool
 	AllowedRoles []string
 	Items        []MenuRoute
 }
