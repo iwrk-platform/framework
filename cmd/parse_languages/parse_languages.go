@@ -92,8 +92,8 @@ func (f *file) findTranslationCalls() {
 		if !ok {
 			return true
 		}
-		isLibT := isPkgDot(ce.Fun, "lib", "T")
-		if !isLibT {
+		isFrontendT := isPkgDot(ce.Fun, "frontend", "T")
+		if !isFrontendT {
 			return true
 		}
 		if fun, ok := ce.Fun.(*ast.SelectorExpr); ok {
