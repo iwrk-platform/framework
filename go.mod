@@ -16,6 +16,8 @@ require (
 	github.com/minio/minio-go/v7 v7.0.70
 	github.com/pkg/errors v0.9.1
 	github.com/qor/i18n v0.0.0-20211222090924-1c3ad686ead6
+	github.com/rs/zerolog v1.31.0
+	github.com/samber/lo v1.39.0
 	github.com/theplant/cldr v0.0.0-20190423050709-9f76f7ce4ee8
 	github.com/uptrace/bun v1.1.17
 	github.com/uptrace/bun/dialect/pgdialect v1.1.17

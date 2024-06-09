@@ -1,7 +1,7 @@
 package s3
 
 import (
-	"fmt"
+	"github.com/pkg/errors"
 	"go.uber.org/config"
 )
 
@@ -16,7 +16,7 @@ type Config struct {
 func newS3Config(provider config.Provider) (*Config, error) {
 	var cfg Config
 	if err := provider.Get("s3").Populate(&cfg); err != nil {
-		return nil, fmt.Errorf("s3 config: %w", err)
+		return nil, errors.New("s3 config: " + err.Error())
 	}
 	return &cfg, nil
 }
