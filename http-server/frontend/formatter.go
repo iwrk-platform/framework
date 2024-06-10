@@ -48,3 +48,19 @@ func TimeStringToInt64(s string) int64 {
 func TimeInt64ToString(i int64) string {
 	return time.Unix(i, 0).Format("15:04")
 }
+
+func DateStringToInt64(s string) int64 {
+	t, err := time.Parse("2006-01-02", s)
+	if err != nil {
+		return 0
+	}
+	return t.Unix()
+}
+
+func DateInt64ToString(i int64, format string) string {
+	return time.Unix(i, 0).Format(format)
+}
+
+func DateInt64ToHtmlString(i int64) string {
+	return time.Unix(i, 0).Format("2006-01-02")
+}
