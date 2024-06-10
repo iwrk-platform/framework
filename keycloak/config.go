@@ -6,10 +6,10 @@ import (
 )
 
 type Config struct {
-	Address      string `env:"address"`
-	ClientId     string `env:"client_id"`
-	ClientSecret string `env:"client_secret"`
-	Realm        string `env:"realm"`
+	Address      string `yaml:"address"`
+	ClientId     string `yaml:"client_id"`
+	ClientSecret string `yaml:"client_secret"`
+	Realm        string `yaml:"realm"`
 }
 
 func newKeycloakConfig(provider config.Provider) (*Config, error) {
