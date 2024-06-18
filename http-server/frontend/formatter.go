@@ -45,8 +45,14 @@ func TimeStringToInt64(s string) int64 {
 	return t.AddDate(1970, 0, 0).UTC().Unix()
 }
 
+// TimeInt64ToString HH:MM formated
 func TimeInt64ToString(i int64) string {
 	return time.Unix(i, 0).Format("15:04")
+}
+
+// TimeInt64ToMSString MM:SS formated
+func TimeInt64ToMSString(i int64) string {
+	return time.Unix(i, 0).Format("04:05")
 }
 
 func DateStringToInt64(s string) int64 {
