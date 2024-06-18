@@ -19,6 +19,7 @@ type Storage interface {
 	BucketListObjects(ctx context.Context, bucket, prefix string) ([]*Object, error)
 	ListObjects(ctx context.Context, prefix string) ([]*Object, error)
 
+	PresignedGetObject(ctx context.Context, key string, expires time.Duration, values url.Values) (*url.URL, error)
 	BucketGetObject(ctx context.Context, bucket, key string) ([]byte, error)
 	GetObject(ctx context.Context, key string) ([]byte, error)
 	BucketPutObject(ctx context.Context, bucket, key string, object io.Reader, length int64, contentType string) (minio.UploadInfo, error)
@@ -206,4 +207,8 @@ func (s *minioStorage) BucketRemoveObject(ctx context.Context, bucket, objectNam
 
 func (s *minioStorage) RemoveObject(ctx context.Context, objectName string) error {
 	return s.BucketRemoveObject(ctx, s.bucket, objectName)
+}
+
+func (s *minioStorage) PresignedGetObject(ctx context.Context, key string, expires time.Duration, values url.Values) (*url.URL, error) {
+	return s.s3.PresignedGetObject(ctx, s.bucket, key, expires, values)
 }
