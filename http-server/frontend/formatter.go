@@ -55,6 +55,10 @@ func TimeInt64ToMSString(i int64) string {
 	return time.Unix(i, 0).Format("04:05")
 }
 
+func TimeInt64ToStringFormat(i int64, format string) string {
+	return time.Unix(i, 0).Format(format)
+}
+
 func DateStringToInt64(s string) int64 {
 	t, err := time.Parse("2006-01-02", s)
 	if err != nil {
