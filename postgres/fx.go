@@ -4,7 +4,6 @@ import (
 	"context"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
-	"log"
 )
 
 func NewModule() fx.Option {
@@ -17,12 +16,7 @@ func NewModule() fx.Option {
 		fx.Invoke(func(lc fx.Lifecycle, pg *Postgres) {
 			lc.Append(fx.Hook{
 				OnStart: func(_ context.Context) error {
-					go func() {
-						if err := pg.StartMigrations(); err != nil {
-							log.Fatalf("start server error : %v\n", err)
-						}
-					}()
-					return nil
+					return pg.StartMigrations()
 				},
 				OnStop: func(ctx context.Context) error {
 					return pg.Conn.Close()
