@@ -9,10 +9,12 @@ import (
 )
 
 type TemporalWorker struct {
-	Config   *Config
-	Logger   *zap.Logger
-	Temporal client.Client
-	Worker   worker.Worker
+	Config     *Config
+	Logger     *zap.Logger
+	Activities []interface{}
+	Workflows  []interface{}
+	Temporal   client.Client
+	Worker     worker.Worker
 }
 
 func NewWorker(config *Config, logger *zap.Logger, temporal *temporal.Temporal) *TemporalWorker {
@@ -24,7 +26,22 @@ func NewWorker(config *Config, logger *zap.Logger, temporal *temporal.Temporal) 
 	}
 	return wrk
 }
+
+func (s *TemporalWorker) AddActivities(activities ...interface{}) {
+	s.Activities = append(s.Activities, activities...)
+}
+
+func (s *TemporalWorker) AddWorkflows(workflows ...interface{}) {
+	s.Workflows = append(s.Workflows, workflows...)
+}
+
 func (s *TemporalWorker) StartWorker() error {
+	for _, activity := range s.Activities {
+		s.Worker.RegisterActivity(activity)
+	}
+	for _, workflow := range s.Workflows {
+		s.Worker.RegisterWorkflow(workflow)
+	}
 	return s.Worker.Run(worker.InterruptCh())
 }
 func (s *TemporalWorker) StopWorker() error {

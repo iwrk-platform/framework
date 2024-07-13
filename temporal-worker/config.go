@@ -6,7 +6,7 @@ import (
 )
 
 type Config struct {
-	TaskQueue string `yaml:"taskQueue"`
+	TaskQueue string `yaml:"task_queue"`
 }
 
 func NewWorkerConfig(provider config.Provider) (*Config, error) {
