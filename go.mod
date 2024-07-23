@@ -4,6 +4,8 @@ go 1.22.5
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.4.3
+	github.com/ettle/strcase v0.2.0
+	github.com/go-sql-driver/mysql v1.8.1
 	github.com/goccy/go-json v0.10.3
 	github.com/goccy/go-yaml v1.11.3
 	github.com/gofiber/contrib/fiberzap/v2 v2.1.4
@@ -11,6 +13,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/hashicorp/vault-client-go v0.4.3
 	github.com/iwrk-platform/formam/v3 v3.6.1
+	github.com/jmoiron/sqlx v1.4.0
 	github.com/kamva/mgm/v3 v3.5.0
 	github.com/mattn/go-colorable v0.1.13
 	github.com/minio/minio-go/v7 v7.0.73
@@ -29,6 +32,7 @@ require (
 )
 
 require (
+	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200428143746-21a406dcc535 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
