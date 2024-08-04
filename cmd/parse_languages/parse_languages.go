@@ -16,9 +16,10 @@ import (
 
 func main() {
 	if len(os.Args) != 4 {
-		log.Fatal(errors.New("must specify exactly tree arguments: templatesPath, localizationsPath, languages(en,fr,zh...)"))
+		log.Fatal(errors.New("must specify exactly tree arguments: templatesPath(./components,../../main-gateway/server/templates,...), localizationsPath, languages(en,fr,zh...)"))
 	}
-	if collectedLanguages, err := ExtractTemplatesDirectory(os.Args[1], strings.Split(os.Args[3], ","), "_templ.go"); err != nil {
+
+	if collectedLanguages, err := ExtractTemplatesDirectory(strings.Split(os.Args[1], ","), strings.Split(os.Args[3], ","), "_templ.go"); err != nil {
 		log.Fatal(err)
 	} else {
 		collectedLocalizations, err := ExtractLocalizationsDirectory(os.Args[2])
@@ -152,33 +153,37 @@ func AssignLanguages(maps ...Language) Language {
 	return out
 }
 
-func ExtractTemplatesDirectory(dir string, langs []string, filenameSuffix string) (Language, error) {
+func ExtractTemplatesDirectory(dirs, langs []string, filenameSuffix string) (Language, error) {
 	all := make(Language)
 	for _, l := range langs {
 		all[l] = make(map[string]map[string]string)
 	}
-	err := filepath.Walk(dir,
-		func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-			if strings.HasSuffix(path, filenameSuffix) {
-				f, err := os.ReadFile(path)
+
+	for _, dir := range dirs {
+		err := filepath.Walk(dir,
+			func(path string, info os.FileInfo, err error) error {
 				if err != nil {
 					return err
 				}
-				lang, err := CollectTranslations(info.Name(), langs, f)
-				if err != nil {
-					return err
+				if strings.HasSuffix(path, filenameSuffix) {
+					f, err := os.ReadFile(path)
+					if err != nil {
+						return err
+					}
+					lang, err := CollectTranslations(info.Name(), langs, f)
+					if err != nil {
+						return err
+					}
+					all = AssignLanguages(all, lang)
+					return nil
 				}
-				all = AssignLanguages(all, lang)
 				return nil
-			}
-			return nil
-		})
-	if err != nil {
-		return nil, err
+			})
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	return all, nil
 }
 
