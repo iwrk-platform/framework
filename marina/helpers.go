@@ -137,36 +137,38 @@ func getStringValueFromColumn(rows *sql.Rows, name string) (string, error) {
 // reflections
 
 func getFieldNames(object any) ([]string, error) {
-	fields := make([]string, 0)
-	t := reflect.Indirect(reflect.ValueOf(object))
-	if t.Kind() != reflect.Struct {
+	if t := reflect.Indirect(reflect.ValueOf(object)); t.IsValid() {
+		if t.Kind() == reflect.Struct {
+			fields := make([]string, 0, t.NumField())
+			for i := 0; i < t.NumField(); i++ {
+				f := t.Type().Field(i)
+				if f.IsExported() {
+					fields = append(fields, f.Name)
+				}
+			}
+			return fields, nil
+		}
 		return []string{}, errors.New("object is not a struct")
 	}
-	for i := 0; i < t.NumField(); i++ {
-		f := t.Type().Field(i)
-		if f.IsExported() {
-			fields = append(fields, f.Name)
-		}
-	}
-	return fields, nil
+	return []string{}, errors.New("object not valid")
 }
 
 func getFieldValueAndType(object any, name string) (any, string, error) {
-	t := reflect.Indirect(reflect.ValueOf(object))
-	field := t.FieldByName(name)
-	if !field.IsValid() {
-		return nil, "", fmt.Errorf("field %s not valid", name)
+	if t := reflect.Indirect(reflect.ValueOf(object)); t.IsValid() {
+		if field := t.FieldByName(name); field.IsValid() {
+			return field.Interface(), field.Type().String(), nil
+		}
 	}
-	return field.Interface(), field.Type().String(), nil
+	return nil, "", fmt.Errorf("field %s not valid", name)
 }
 
 func getFieldType(object any, name string) (string, error) {
-	t := reflect.Indirect(reflect.ValueOf(object))
-	field := t.FieldByName(name)
-	if !field.IsValid() {
-		return "", fmt.Errorf("field %s not valid", name)
+	if t := reflect.Indirect(reflect.ValueOf(object)); t.IsValid() {
+		if field := t.FieldByName(name); field.IsValid() {
+			return field.Type().String(), nil
+		}
 	}
-	return field.Type().String(), nil
+	return "", fmt.Errorf("field %s not valid", name)
 }
 
 // builders
